@@ -2,35 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-///ゲーム中にコライダーを設定する
-/// </summary>
-public class SetingCollider : MonoBehaviour
+namespace Game.Field.Collider
 {
-    [SerializeField] FieldScriptable m_fieldScriptable;
-    FieldCollider m_fieldCollider;
 
-    private void Start()
+    /// <summary>
+    ///ゲーム中にコライダーを設定する
+    /// </summary>
+    public class SetingCollider : MonoBehaviour
     {
-        m_fieldScriptable.Start();
-        m_fieldCollider = new FieldCollider();
-        m_fieldScriptable.Initialize();
-    }
+        [SerializeField] FieldScriptable m_fieldScriptable;
+        FieldCollider m_fieldCollider;
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+        private void Start()
         {
-            m_fieldScriptable.AddPosition(Input.mousePosition);
+            m_fieldCollider = new FieldCollider();
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        private void Update()
         {
-            m_fieldScriptable.Set();
-            m_fieldScriptable.Initialize();
-            m_fieldCollider.SetPivot(m_fieldScriptable.colliderPivot[0]);
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                m_fieldScriptable.AddPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
 
-        m_fieldCollider.DebugDrawColliderLine();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                m_fieldCollider.SetPivot(m_fieldScriptable.GetColliderData(0));
+            }
+
+            m_fieldCollider.DebugDrawColliderLine();
+        }
     }
 }
